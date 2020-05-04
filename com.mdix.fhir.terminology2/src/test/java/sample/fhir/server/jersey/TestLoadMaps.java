@@ -48,11 +48,100 @@ public class TestLoadMaps {
 
 		ourCtx.getRestfulClientFactory().setConnectTimeout(50000);
 		ourCtx.getRestfulClientFactory().setSocketTimeout(10000000);
-		client = ourCtx.newRestfulGenericClient("http://localhost:8180/terminology/fhir");
+		client = ourCtx.newRestfulGenericClient("http://localhost:8080/fhir/123");
 		client.setEncoding(EncodingEnum.JSON);
 		client.registerInterceptor(new LoggingInterceptor(true));
 	}
 
+	public static List<String> loadMapsxx(String directory) {
+
+		// FhirContext fhirContext = FhirContext.forDstu3();
+		List<String> fileNames = new ArrayList<>();
+		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
+			for (Path path : directoryStream) {
+				ConceptMap conceptMapFromTo = new ConceptMap();
+				ConceptMap conceptMapToFrom = new ConceptMap();
+				ConceptMapGroupComponent cmgcFromTo = conceptMapFromTo.addGroup();
+				ConceptMapGroupComponent cmgcToFrom = conceptMapToFrom.addGroup();
+				//boolean firstLine = true;
+				//boolean secondLine = true;
+				int count = 0;
+				
+				for (String line : Files.readAllLines(path)) {
+					// String[] code2code = line.toString().split(",");
+					String[] code2code = line.toString().split("\t");
+					if(count < 2) {
+						count++;
+						continue;
+					}
+					if(count == 2)
+					{
+						if (code2code.length == 10) {
+
+							UriType sourceuri = new UriType();
+							sourceuri.setValue(code2code[2]);
+
+							conceptMapFromTo.setSource(sourceuri);
+							conceptMapToFrom.setTarget(sourceuri);
+
+							UriType targeturi = new UriType();
+							targeturi.setValue(code2code[9]);
+
+							conceptMapFromTo.setTarget(targeturi);
+							conceptMapToFrom.setSource(targeturi);
+						
+							cmgcFromTo.setSource(code2code[0]);
+							cmgcFromTo.setTarget(code2code[6]);
+
+							cmgcToFrom.setTarget(code2code[0]);
+							cmgcToFrom.setSource(code2code[6]);
+
+						} else {
+							System.out.println("invalid " + line);
+						}
+					}
+					
+					else {
+						if (code2code.length == 10) {
+							
+							SourceElementComponent secFromTo = cmgcFromTo.addElement();
+							CodeType aaa = new CodeType();
+							secFromTo.setCodeElement(aaa);
+							secFromTo.setCode(code2code[2]).addTarget().setCode(code2code[9]).setEquivalence(
+								ConceptMapEquivalence.EQUAL);
+
+							SourceElementComponent secToFrom = cmgcToFrom.addElement();
+							CodeType aaa2 = new CodeType();
+							secToFrom.setCodeElement(aaa2);
+							secToFrom.setCode(code2code[9]).addTarget().setCode(code2code[2]).setEquivalence(
+								ConceptMapEquivalence.EQUAL);
+
+						} else {
+							System.out.println("invalid " + line);
+						}
+					}
+					count++;
+				}
+
+				System.out.println(
+					"Appointment JSon::" +
+							ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
+
+				client.setEncoding(EncodingEnum.JSON);
+				client.create().resource(conceptMapFromTo).prefer(
+					PreferReturnEnum.REPRESENTATION).execute();
+				//System.out.println(results.getId());
+				client.create().resource(conceptMapToFrom).prefer(PreferReturnEnum.REPRESENTATION).execute();
+			}
+		} catch (IOException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return fileNames;
+	}
+	
+	
+	
+	/*
 	public static List<String> loadMapsxx(String directory) {
 
 		// FhirContext fhirContext = FhirContext.forDstu3();
@@ -128,11 +217,12 @@ public class TestLoadMaps {
 		} catch (IOException ex) {
 		}
 		return fileNames;
-	}
+	}*/
 
 	@Test
 	public void loadFromMappings() throws IOException {
-		TerminologyUtil.load(client, "src/test/resources/mappings/loinc");
+		//TerminologyUtil.load(client, "src/test/resources/mappings/loinc");
+		loadMapsxx("src/test/resources/mappings/loinc/");
 	}
 
 }

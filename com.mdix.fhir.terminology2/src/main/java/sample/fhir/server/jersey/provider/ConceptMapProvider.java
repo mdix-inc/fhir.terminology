@@ -95,7 +95,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
     }
 
     private static IdType createId(final Long id, final Long theVersionId) {
-        return new IdType("Patient", "" + id, "" + theVersionId);
+        return new IdType("ConceptMap", "" + id, "" + theVersionId);
     }
 
     private static Patient createPatient(final String name) {
@@ -106,12 +106,16 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
         return patient;
     }
 
+    /*private static IdType createId2(final Long id, final Long theVersionId) {
+        return new IdType("Patient", "" + id, "" + theVersionId);
+    }*/
+    
     private long myNextId = 1;
     @Create
 	public MethodOutcome createConceptMap(@ResourceParam ConceptMap theConceptMap) throws FHIRException {
 		long id = myNextId++;
-		IdDt idDt = new IdDt(id);
-		theConceptMap.setId(idDt);
+		//IdDt idDt = new IdDt(id);
+		theConceptMap.setId(createId(id,1l));
 		// Table myTable = getDynamicDB().getTable(tableName);
 		// IParser parser = fhirContext.newJsonParser();
 		// parser.encodeResourceToString(theConceptMap);
@@ -122,7 +126,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 		conceptMaps.put(
 			createKey(theConceptMap.getSourceUriType().getValue(), theConceptMap.getTargetUriType().getValue()),
 			theConceptMap);
-		return new MethodOutcome(idDt);
+		return new MethodOutcome(theConceptMap.getIdElement());
 	}
     
     private String createKey(String source, String target) {
