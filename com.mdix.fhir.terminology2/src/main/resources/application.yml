@@ -15,4 +15,4 @@ hapi:
       request-only: true
 logging:
   level:
-    ca.uhn.fhir.jaxrs: debug
+    org.springframework.web: TRACE
