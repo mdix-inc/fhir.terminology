@@ -16,3 +16,5 @@ hapi:
 logging:
   level:
     org.springframework.web: TRACE
+    ca.uhn.fhir.jaxrs: TRACE
+    

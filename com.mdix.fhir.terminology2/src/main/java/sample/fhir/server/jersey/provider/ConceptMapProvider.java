@@ -95,7 +95,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
     }
 
     private static IdType createId(final Long id, final Long theVersionId) {
-        return new IdType("ConceptMap", "" + id, "" + theVersionId);
+        return new IdType("ConceptMap",  id);
     }
 
     private static Patient createPatient(final String name) {

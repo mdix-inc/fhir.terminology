@@ -48,7 +48,7 @@ public class TestLoadMaps {
 
 		ourCtx.getRestfulClientFactory().setConnectTimeout(50000);
 		ourCtx.getRestfulClientFactory().setSocketTimeout(10000000);
-		client = ourCtx.newRestfulGenericClient("http://localhost:8080/fhir/123");
+		client = ourCtx.newRestfulGenericClient("http://localhost:8080/fhir");
 		client.setEncoding(EncodingEnum.JSON);
 		client.registerInterceptor(new LoggingInterceptor(true));
 	}
@@ -107,13 +107,13 @@ public class TestLoadMaps {
 							SourceElementComponent secFromTo = cmgcFromTo.addElement();
 							CodeType aaa = new CodeType();
 							secFromTo.setCodeElement(aaa);
-							secFromTo.setCode(code2code[2]).addTarget().setCode(code2code[9]).setEquivalence(
+							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
 								ConceptMapEquivalence.EQUAL);
 
 							SourceElementComponent secToFrom = cmgcToFrom.addElement();
 							CodeType aaa2 = new CodeType();
 							secToFrom.setCodeElement(aaa2);
-							secToFrom.setCode(code2code[9]).addTarget().setCode(code2code[2]).setEquivalence(
+							secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
 								ConceptMapEquivalence.EQUAL);
 
 						} else {
