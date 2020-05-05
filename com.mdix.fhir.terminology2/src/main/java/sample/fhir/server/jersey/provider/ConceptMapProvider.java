@@ -126,7 +126,12 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 		conceptMaps.put(
 			createKey(theConceptMap.getSourceUriType().getValue(), theConceptMap.getTargetUriType().getValue()),
 			theConceptMap);
-		return new MethodOutcome(theConceptMap.getIdElement());
+		MethodOutcome retval = new MethodOutcome();
+		retval.setId(theConceptMap.getIdElement());
+		// Set resource for response
+		retval.setResource(theConceptMap);
+		
+		return retval;
 	}
     
     private String createKey(String source, String target) {
