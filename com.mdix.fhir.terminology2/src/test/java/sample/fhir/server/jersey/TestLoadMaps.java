@@ -48,7 +48,7 @@ public class TestLoadMaps {
 
 		ourCtx.getRestfulClientFactory().setConnectTimeout(50000);
 		ourCtx.getRestfulClientFactory().setSocketTimeout(10000000);
-		client = ourCtx.newRestfulGenericClient("http://localhost:8080/fhir");
+		client = ourCtx.newRestfulGenericClient("http://ec2-18-188-214-103.us-east-2.compute.amazonaws.com:8080/fhir");
 		client.setEncoding(EncodingEnum.JSON);
 		client.registerInterceptor(new LoggingInterceptor(true));
 	}

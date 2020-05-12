@@ -192,6 +192,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 
 			ConceptMapGroupComponent conceptMapGroupComponent = conceptMap.getGroupFirstRep();
 			for (SourceElementComponent sourceElementComponent : conceptMapGroupComponent.getElement()) {
+				//System.out.println("testing:"+sourceElementComponent.getCode());
 				if (sourceElementComponent.hasTarget() && sourceElementComponent.getCode().equals(code.getValue())) {
 					value.setValue(true);
 					TargetElementComponent tec = sourceElementComponent.getTargetFirstRep();
