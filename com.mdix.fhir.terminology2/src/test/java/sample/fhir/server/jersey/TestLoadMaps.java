@@ -78,6 +78,10 @@ public class TestLoadMaps {
 					{
 						if (code2code.length == 10) {
 
+							if((code2code[2] == null || code2code[2].contentEquals("")) || (code2code[9] == null || code2code[9].contentEquals(""))) {
+								break;
+							}
+							
 							UriType sourceuri = new UriType();
 							sourceuri.setValue(code2code[2]);
 
@@ -90,12 +94,26 @@ public class TestLoadMaps {
 							conceptMapFromTo.setTarget(targeturi);
 							conceptMapToFrom.setSource(targeturi);
 						
-							cmgcFromTo.setSource(code2code[0]);
-							cmgcFromTo.setTarget(code2code[6]);
+							cmgcFromTo.setSource(code2code[2]);
+							cmgcFromTo.setTarget(code2code[9]);
 
-							cmgcToFrom.setTarget(code2code[0]);
-							cmgcToFrom.setSource(code2code[6]);
+							cmgcToFrom.setTarget(code2code[2]);
+							cmgcToFrom.setSource(code2code[9]);
+							
+							if((code2code[0] != null && !code2code[0].contentEquals("")) && (code2code[6] != null && !code2code[6].contentEquals("")))
+							{
+								SourceElementComponent secFromTo = cmgcFromTo.addElement();
+								CodeType aaa = new CodeType();
+								secFromTo.setCodeElement(aaa);
+								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
+									ConceptMapEquivalence.EQUAL);
 
+								SourceElementComponent secToFrom = cmgcToFrom.addElement();
+								CodeType aaa2 = new CodeType();
+								secToFrom.setCodeElement(aaa2);
+								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
+									ConceptMapEquivalence.EQUAL);
+							}
 						} else {
 							System.out.println("invalid " + line);
 						}
@@ -104,18 +122,20 @@ public class TestLoadMaps {
 					else {
 						if (code2code.length == 10) {
 							
-							SourceElementComponent secFromTo = cmgcFromTo.addElement();
-							CodeType aaa = new CodeType();
-							secFromTo.setCodeElement(aaa);
-							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
-
-							SourceElementComponent secToFrom = cmgcToFrom.addElement();
-							CodeType aaa2 = new CodeType();
-							secToFrom.setCodeElement(aaa2);
-							secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
-
+							if((code2code[0] != null && !code2code[0].contentEquals("")) && (code2code[6] != null && !code2code[6].contentEquals("")))
+							{
+								SourceElementComponent secFromTo = cmgcFromTo.addElement();
+								CodeType aaa = new CodeType();
+								secFromTo.setCodeElement(aaa);
+								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
+										ConceptMapEquivalence.EQUAL);
+								
+								SourceElementComponent secToFrom = cmgcToFrom.addElement();
+								CodeType aaa2 = new CodeType();
+								secToFrom.setCodeElement(aaa2);
+								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
+										ConceptMapEquivalence.EQUAL);
+							}
 						} else {
 							System.out.println("invalid " + line);
 						}
