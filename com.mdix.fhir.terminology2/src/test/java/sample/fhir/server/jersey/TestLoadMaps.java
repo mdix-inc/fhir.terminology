@@ -17,6 +17,8 @@ import org.hl7.fhir.dstu3.model.UriType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.amazonaws.util.StringUtils;
+
 //import com.sun.java.util.jar.pack.Package.File;
 
 import ca.uhn.fhir.context.FhirContext;
@@ -26,6 +28,7 @@ import ca.uhn.fhir.rest.api.PreferReturnEnum;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 //import ca.uhn.fhir.rest.client.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
+import ch.qos.logback.classic.Level;
 //import ca.uhn.fhir.rest.server.EncodingEnum;
 import sample.fhir.server.jersey.provider.TerminologyUtil;
 
@@ -51,6 +54,8 @@ public class TestLoadMaps {
 		client = ourCtx.newRestfulGenericClient("http://ec2-18-188-214-103.us-east-2.compute.amazonaws.com:8080/fhir");
 		client.setEncoding(EncodingEnum.JSON);
 		client.registerInterceptor(new LoggingInterceptor(true));
+	    ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+		root.setLevel(Level.OFF);
 	}
 
 	public static List<String> loadMapsxx(String directory) {
@@ -63,95 +68,80 @@ public class TestLoadMaps {
 				ConceptMap conceptMapToFrom = new ConceptMap();
 				ConceptMapGroupComponent cmgcFromTo = conceptMapFromTo.addGroup();
 				ConceptMapGroupComponent cmgcToFrom = conceptMapToFrom.addGroup();
-				//boolean firstLine = true;
-				//boolean secondLine = true;
 				int count = 0;
+				boolean foundValidCode=false;
 				
+				
+			
 				for (String line : Files.readAllLines(path)) {
-					// String[] code2code = line.toString().split(",");
-					String[] code2code = line.toString().split("\t");
+					
 					if(count < 2) {
 						count++;
 						continue;
 					}
-					if(count == 2)
-					{
-						if (code2code.length == 10) {
-
-							if((code2code[2] == null || code2code[2].contentEquals("")) || (code2code[9] == null || code2code[9].contentEquals(""))) {
-								break;
-							}
+					String[] code2code = line.toString().split("\t");
+					if (code2code.length == 10 && !StringUtils.isNullOrEmpty(code2code[0]) && !StringUtils.isNullOrEmpty(code2code[2]) && !StringUtils.isNullOrEmpty(code2code[6]) && !StringUtils.isNullOrEmpty(code2code[8])  && !StringUtils.isNullOrEmpty(code2code[9])) {
+						if (!foundValidCode) {
 							
-							UriType sourceuri = new UriType();
+							
+							foundValidCode = true;
+							
+							
+														UriType sourceuri = new UriType();
 							sourceuri.setValue(code2code[2]);
-
+//
 							conceptMapFromTo.setSource(sourceuri);
 							conceptMapToFrom.setTarget(sourceuri);
-
+//
 							UriType targeturi = new UriType();
 							targeturi.setValue(code2code[9]);
-
+//
 							conceptMapFromTo.setTarget(targeturi);
 							conceptMapToFrom.setSource(targeturi);
-						
+//						
 							cmgcFromTo.setSource(code2code[2]);
 							cmgcFromTo.setTarget(code2code[9]);
 
 							cmgcToFrom.setTarget(code2code[2]);
 							cmgcToFrom.setSource(code2code[9]);
 							
-							if((code2code[0] != null && !code2code[0].contentEquals("")) && (code2code[6] != null && !code2code[6].contentEquals("")))
-							{
-								SourceElementComponent secFromTo = cmgcFromTo.addElement();
-								CodeType aaa = new CodeType();
-								secFromTo.setCodeElement(aaa);
-								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-									ConceptMapEquivalence.EQUAL);
-
-								SourceElementComponent secToFrom = cmgcToFrom.addElement();
-								CodeType aaa2 = new CodeType();
-								secToFrom.setCodeElement(aaa2);
-								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-									ConceptMapEquivalence.EQUAL);
-							}
-						} else {
-							System.out.println("invalid " + line);
-						}
-					}
-					
-					else {
-						if (code2code.length == 10) {
 							
-							if((code2code[0] != null && !code2code[0].contentEquals("")) && (code2code[6] != null && !code2code[6].contentEquals("")))
-							{
-								SourceElementComponent secFromTo = cmgcFromTo.addElement();
-								CodeType aaa = new CodeType();
-								secFromTo.setCodeElement(aaa);
-								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-										ConceptMapEquivalence.EQUAL);
-								
-								SourceElementComponent secToFrom = cmgcToFrom.addElement();
-								CodeType aaa2 = new CodeType();
-								secToFrom.setCodeElement(aaa2);
-								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-										ConceptMapEquivalence.EQUAL);
-							}
-						} else {
-							System.out.println("invalid " + line);
 						}
-					}
-					count++;
-				}
+						
+						
+						SourceElementComponent secFromTo = cmgcFromTo.addElement();
+						CodeType aaa = new CodeType();
+						secFromTo.setCodeElement(aaa);
+						secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
+							ConceptMapEquivalence.EQUAL);
 
-				System.out.println(
-					"Appointment JSon::" +
-							ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
+						SourceElementComponent secToFrom = cmgcToFrom.addElement();
+						CodeType aaa2 = new CodeType();
+						secToFrom.setCodeElement(aaa2);
+						secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
+							ConceptMapEquivalence.EQUAL);
+
+					}
+
+					}
+
+				if(foundValidCode) {
+					
+					System.out.println("Adding file " +path.getFileName());
+					
+					
+//				System.out.println(
+//					"Concept Maps ::" +
+//							ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
 
 				client.setEncoding(EncodingEnum.JSON);
 				client.create().resource(conceptMapFromTo).prefer(
 					PreferReturnEnum.REPRESENTATION).execute();
 				//System.out.println(results.getId());
 				client.create().resource(conceptMapToFrom).prefer(PreferReturnEnum.REPRESENTATION).execute();
+				} else {
+					System.err.println("NOT Adding file " +path.getFileName());
+				}
 			}
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
@@ -161,83 +151,7 @@ public class TestLoadMaps {
 	
 	
 	
-	/*
-	public static List<String> loadMapsxx(String directory) {
 
-		// FhirContext fhirContext = FhirContext.forDstu3();
-		List<String> fileNames = new ArrayList<>();
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
-			for (Path path : directoryStream) {
-				ConceptMap conceptMapFromTo = new ConceptMap();
-				ConceptMap conceptMapToFrom = new ConceptMap();
-				ConceptMapGroupComponent cmgcFromTo = conceptMapFromTo.addGroup();
-				ConceptMapGroupComponent cmgcToFrom = conceptMapToFrom.addGroup();
-				boolean firstLine = true;
-
-				for (String line : Files.readAllLines(path)) {
-					// String[] code2code = line.toString().split(",");
-					String[] code2code = line.toString().split("\t");
-					if (firstLine) {
-						firstLine = false;
-
-						if (code2code.length == 4) {
-
-							UriType sourceuri = new UriType();
-							sourceuri.setValue(code2code[0]);
-
-							conceptMapFromTo.setSource(sourceuri);
-							conceptMapToFrom.setTarget(sourceuri);
-
-							UriType targeturi = new UriType();
-							targeturi.setValue(code2code[2]);
-
-							conceptMapFromTo.setTarget(targeturi);
-							conceptMapToFrom.setSource(targeturi);
-
-							cmgcFromTo.setSource(code2code[1]);
-							cmgcFromTo.setTarget(code2code[3]);
-
-							cmgcToFrom.setTarget(code2code[1]);
-							cmgcToFrom.setSource(code2code[3]);
-
-						} else {
-							System.out.println("invalid " + line);
-						}
-					} else {
-						if (code2code.length == 4) {
-
-							SourceElementComponent secFromTo = cmgcFromTo.addElement();
-							CodeType aaa = new CodeType();
-							secFromTo.setCodeElement(aaa);
-							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[2]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
-
-							SourceElementComponent secToFrom = cmgcToFrom.addElement();
-							CodeType aaa2 = new CodeType();
-							secToFrom.setCodeElement(aaa2);
-							secToFrom.setCode(code2code[2]).addTarget().setCode(code2code[0]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
-
-						} else {
-							System.out.println("invalid " + line);
-						}
-					}
-				}
-
-				System.out.println(
-					"Appointment JSon::" +
-							ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
-
-				client.setEncoding(EncodingEnum.JSON);
-				final MethodOutcome results = client.create().resource(conceptMapFromTo).prefer(
-					PreferReturnEnum.REPRESENTATION).execute();
-				System.out.println(results.getId());
-				client.create().resource(conceptMapToFrom).prefer(PreferReturnEnum.REPRESENTATION).execute();
-			}
-		} catch (IOException ex) {
-		}
-		return fileNames;
-	}*/
 
 	@Test
 	public void loadFromMappings() throws IOException {
