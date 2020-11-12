@@ -58,7 +58,7 @@ public class TestLoadMaps {
 		root.setLevel(Level.OFF);
 	}
 
-	public static List<String> loadMapsxx(String directory) {
+	public static List<String> loadMapsxx(String directory) throws Exception {
 
 		// FhirContext fhirContext = FhirContext.forDstu3();
 		List<String> fileNames = new ArrayList<>();
@@ -87,7 +87,7 @@ public class TestLoadMaps {
 							foundValidCode = true;
 							
 							
-														UriType sourceuri = new UriType();
+							UriType sourceuri = new UriType();
 							sourceuri.setValue(code2code[2]);
 //
 							conceptMapFromTo.setSource(sourceuri);
@@ -111,15 +111,24 @@ public class TestLoadMaps {
 						
 						SourceElementComponent secFromTo = cmgcFromTo.addElement();
 						CodeType aaa = new CodeType();
+						
+						
 						secFromTo.setCodeElement(aaa);
 						secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-							ConceptMapEquivalence.EQUAL);
+							ConceptMapEquivalence.EQUAL).setDisplay(code2code[1]);
+						
+//						System.out.println(" code2code[1] " + code2code[1]);
+						
+//						secFromTo.setDisplay("foo");
 
 						SourceElementComponent secToFrom = cmgcToFrom.addElement();
 						CodeType aaa2 = new CodeType();
 						secToFrom.setCodeElement(aaa2);
 						secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-							ConceptMapEquivalence.EQUAL);
+							ConceptMapEquivalence.EQUAL).setDisplay(code2code[8]);
+//						System.out.println(" code2code[7] " + code2code[8]);
+						
+//						secToFrom.setDisplay("bar");
 
 					}
 
@@ -133,6 +142,13 @@ public class TestLoadMaps {
 //				System.out.println(
 //					"Concept Maps ::" +
 //							ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
+//
+//				
+//				System.out.println(
+//						"Concept Maps ::" +
+//								ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapToFrom));
+
+				
 
 				client.setEncoding(EncodingEnum.JSON);
 				client.create().resource(conceptMapFromTo).prefer(
@@ -154,9 +170,9 @@ public class TestLoadMaps {
 
 
 	@Test
-	public void loadFromMappings() throws IOException {
+	public void loadFromMappings() throws Exception {
 		//TerminologyUtil.load(client, "src/test/resources/mappings/loinc");
-		loadMapsxx("src/test/resources/mappings/loinc/");
+		loadMapsxx("src/test/resources/mappings/loinc");
 	}
 
 }
