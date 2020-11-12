@@ -207,6 +207,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 					ppc.addPart().setName("equivalence").setValue(codeValue);
 					Coding targetCoding = new Coding();
 					targetCoding.setCode(tec.getCode());
+					targetCoding.setDisplay(tec.getDisplay());
 
 					// UriType targetURI = (UriType) conceptMap.getTarget();
 					targetCoding.setSystem(conceptMapGroupComponent.getTarget());
