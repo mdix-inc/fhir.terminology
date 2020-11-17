@@ -1,0 +1,9 @@
+PerspectaDOD	http://ldcs.chcs/ethnicity		Condition (IF True)			HL7 FHIR	http://hl7.org/fhir/us/core/ValueSet/omb-ethnicity-category				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+1	HISPANIC	CHCS.ETHNIC_BACKGROUND_8191				2135-2		Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+2	SE ASIAN	CHCS.ETHNIC_BACKGROUND_8191				2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+3	FILIPINO	CHCS.ETHNIC_BACKGROUND_8191				2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+4	OTHER ASIAN/PACIFIC ISLANDER	CHCS.ETHNIC_BACKGROUND_8191				2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+9	OTHER	CHCS.ETHNIC_BACKGROUND_8191				2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+Z	UNKNOWN	CHCS.ETHNIC_BACKGROUND_8191				2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+						2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
