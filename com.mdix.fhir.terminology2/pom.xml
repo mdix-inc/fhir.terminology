@@ -1,75 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ca.uhn.hapi.fhir</groupId>
-	<artifactId>hapi-fhir-spring-boot-sample-server-jersey</artifactId>
-	<version>4.1.0</version>
+
+
+
+
+	<groupId>com.mdixinc.fhir</groupId>
+	<artifactId>com.mdixinc.fhir.terminology</artifactId>
+	<version>2.0.0</version>
+
+	<properties>
+		<spring_boot_version>2.6.2</spring_boot_version>
+		<hapi.version>5.7.0</hapi.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring_boot_version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 
 	<packaging>jar</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-dynamodb</artifactId>
-			<version>1.11.443</version>
-		</dependency>
-
 		<!-- Compile -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.2.0.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>2.2.0.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jersey</artifactId>
-			<version>2.2.0.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-spring-boot-starter</artifactId>
-			<version>4.1.0</version>
+			<version>${hapi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-jaxrsserver-base</artifactId>
-			<version>4.1.0</version>
+			<version>${hapi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-validation-resources-dstu3</artifactId>
-			<version>4.1.0</version>
+			<version>${hapi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-structures-dstu3</artifactId>
-			<version>4.1.0</version>
+			<version>${hapi.version}</version>
 		</dependency>
 		<!-- Optional -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
-			<version>2.2.0.RELEASE</version>
-		</dependency>
-		<dependency>
-    		<groupId>com.fasterxml.jackson.core</groupId>
-    		<artifactId>jackson-databind</artifactId>
-    		<version>2.9.4</version>
 		</dependency>
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<version>2.2.0.RELEASE</version>
 		</dependency>
+
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -91,26 +108,13 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
-
-
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-
 				<configuration>
-					<mainClass>sample.fhir.server.jersey.SampleJerseyRestfulServerApplication</mainClass>
+					<mainClass>com.mdix.fhir.terminology.server.FhirTerminologyServerApplication</mainClass>
 				</configuration>
-
 				<executions>
 					<execution>
 						<goals>
@@ -118,59 +122,9 @@
 						</goals>
 					</execution>
 				</executions>
-
-			</plugin>
-			
-			 
-			<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-surefire-plugin</artifactId>
-        		<version>3.0.0-M4</version>
-        		<configuration>
-          			<skipTests>true</skipTests>
-        		</configuration>
-      		</plugin>
-			
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.2.3</version>
-				<configuration>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-					<dockerDirectory>${project.build.directory}/docker</dockerDirectory>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>zip-files</id>
-						<phase>package</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<zip
-									destfile="${project.build.directory}/fhirspringboot.zip">
-									<zipfileset dir="${project.build.directory}/docker" />
-									<zipfileset dir="${project.build.directory}"
-										includes="${project.artifactId}.jar" />
-								</zip>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>

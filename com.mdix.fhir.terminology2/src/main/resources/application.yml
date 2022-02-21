@@ -4,9 +4,9 @@ hapi:
     server:
       path: /fhir/*
     rest:
-      server-name: hapi-fhir-spring-boot-sample-server-jersey
-      server-version: 1.0.0
-      implementation-description: Spring Boot Jersey Server Sample
+      server-name: com.mdixinc.fhir.terminology
+      server-version: 2.0.0
+      implementation-description: MDIX FHIR Terminology Server
       default-response-encoding: json
       e-tag-support: enabled
       default-pretty-print: true
@@ -15,6 +15,6 @@ hapi:
       request-only: true
 logging:
   level:
-    org.springframework.web: TRACE
-    ca.uhn.fhir.jaxrs: TRACE
+    org.springframework.web: INFO
+    ca.uhn.fhir.jaxrs: INFO
     
