@@ -14,8 +14,8 @@ import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.UriType;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.amazonaws.util.StringUtils;
 
@@ -46,7 +46,7 @@ public class TestLoadMaps {
 
 	private static String HOST = "http://localhost:";
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUpClass() throws Exception {
 
 		ourCtx.getRestfulClientFactory().setConnectTimeout(50000);
