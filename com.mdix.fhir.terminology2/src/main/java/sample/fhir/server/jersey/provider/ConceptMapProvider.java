@@ -40,21 +40,22 @@ import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.param.StringParam;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 
-import org.hl7.fhir.dstu3.model.BooleanType;
-import org.hl7.fhir.dstu3.model.CodeType;
-import org.hl7.fhir.dstu3.model.CodeableConcept;
-import org.hl7.fhir.dstu3.model.Coding;
-import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.HumanName;
-import org.hl7.fhir.dstu3.model.IdType;
-import org.hl7.fhir.dstu3.model.Parameters;
-import org.hl7.fhir.dstu3.model.Patient;
-import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
+import org.hl7.fhir.r5.model.HumanName;
+import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.model.Patient;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
@@ -124,7 +125,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 		// conceptMaps.clear();
 		
 		conceptMaps.put(
-			createKey(theConceptMap.getSourceUriType().getValue(), theConceptMap.getTargetUriType().getValue()),
+			createKey(theConceptMap.getSourceScopeUriType().getValue(), theConceptMap.getTargetScopeUriType().getValue()),
 			theConceptMap);
 		MethodOutcome retval = new MethodOutcome();
 		retval.setId(theConceptMap.getIdElement());

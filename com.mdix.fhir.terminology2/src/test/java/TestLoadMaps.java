@@ -8,12 +8,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.dstu3.model.CodeType;
-import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
-import org.hl7.fhir.dstu3.model.UriType;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.r5.model.UriType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class TestLoadMaps {
 
 		ourCtx.getRestfulClientFactory().setConnectTimeout(50000);
 		ourCtx.getRestfulClientFactory().setSocketTimeout(10000000);
-		client = ourCtx.newRestfulGenericClient("http://ec2-18-188-214-103.us-east-2.compute.amazonaws.com:8080/fhir");
+		client = ourCtx.newRestfulGenericClient("http://localhost:8080/fhir");
 		client.setEncoding(EncodingEnum.JSON);
 		client.registerInterceptor(new LoggingInterceptor(true));
 	    ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
@@ -92,11 +92,11 @@ public class TestLoadMaps {
 							
 							foundValidCode = true;
 
-							conceptMapFromTo.setSource(sourceuri);
-							conceptMapToFrom.setTarget(sourceuri);
+							conceptMapFromTo.setSourceScope(sourceuri);
+							conceptMapToFrom.setTargetScope(sourceuri);
 
-							conceptMapFromTo.setTarget(targeturi);
-							conceptMapToFrom.setSource(targeturi);
+							conceptMapFromTo.setTargetScope(targeturi);
+							conceptMapToFrom.setSourceScope(targeturi);
 						
 							cmgcFromTo.setSource(code2code[2]);
 							cmgcFromTo.setTarget(code2code[9]);
@@ -113,8 +113,7 @@ public class TestLoadMaps {
 						
 						
 						secFromTo.setCodeElement(aaa);
-						secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-							ConceptMapEquivalence.EQUAL).setDisplay(code2code[8]);
+						secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setRelationship(ConceptMapRelationship.EQUIVALENT).setDisplay(code2code[8]);
 						
 //						System.out.println(" code2code[1] " + code2code[1]);
 						
@@ -123,8 +122,7 @@ public class TestLoadMaps {
 						SourceElementComponent secToFrom = cmgcToFrom.addElement();
 						CodeType aaa2 = new CodeType();
 						secToFrom.setCodeElement(aaa2);
-						secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-							ConceptMapEquivalence.EQUAL).setDisplay(code2code[1]);
+						secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setRelationship(ConceptMapRelationship.EQUIVALENT).setDisplay(code2code[1]);
 //						System.out.println(" code2code[7] " + code2code[8]);
 						
 //						secToFrom.setDisplay("bar");
@@ -138,14 +136,14 @@ public class TestLoadMaps {
 					System.out.println("Adding file " +path.getFileName());
 					
 					
-//				System.out.println(
-//					"Concept Maps ::" +
-//							ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
-//
-//				
-//				System.out.println(
-//						"Concept Maps ::" +
-//								ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapToFrom));
+			System.out.println(
+					"Concept Maps ::" +
+						ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapFromTo));
+
+			
+				System.out.println(
+						"Concept Maps ::" +
+								ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(conceptMapToFrom));
 
 				
 
@@ -171,7 +169,7 @@ public class TestLoadMaps {
 	@Test
 	public void loadFromMappings() throws Exception {
 		//TerminologyUtil.load(client, "src/test/resources/mappings/loinc");
-		loadMapsxx("src/test/resources/mappings/loinc/dod");
+		loadMapsxx("src/test/resources/mappings/apex");
 	}
 
 }

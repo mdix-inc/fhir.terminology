@@ -19,12 +19,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.dstu3.model.CodeType;
-import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
-import org.hl7.fhir.dstu3.model.UriType;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.r5.model.UriType;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.api.EncodingEnum;
@@ -48,7 +48,7 @@ public class TerminologyUtil {
 		// String host = args[0];
 		String directory = args[0];
 		FhirContext ourCtx = FhirContext.forDstu3();
-		IGenericClient client = ourCtx.newRestfulGenericClient("http://ec2-18-188-214-103.us-east-2.compute.amazonaws.com:8080/fhir");
+		IGenericClient client = ourCtx.newRestfulGenericClient("http://localhost:8080/fhir");
 		client.setEncoding(EncodingEnum.JSON);
 		client.registerInterceptor(new LoggingInterceptor(true));
 		load(client, directory);
@@ -143,14 +143,14 @@ public class TerminologyUtil {
 							UriType sourceuri = new UriType();
 							sourceuri.setValue(code2code[2]);
 
-							conceptMapFromTo.setSource(sourceuri);
-							conceptMapToFrom.setTarget(sourceuri);
+							conceptMapFromTo.setSourceScope(sourceuri);
+							conceptMapToFrom.setTargetScope(sourceuri);
 
 							UriType targeturi = new UriType();
 							targeturi.setValue(code2code[9]);
 
-							conceptMapFromTo.setTarget(targeturi);
-							conceptMapToFrom.setSource(targeturi);
+							conceptMapFromTo.setTargetScope(targeturi);
+							conceptMapToFrom.setSourceScope(targeturi);
 						
 							cmgcFromTo.setSource(code2code[2]);
 							cmgcFromTo.setTarget(code2code[9]);
@@ -163,14 +163,12 @@ public class TerminologyUtil {
 							SourceElementComponent secFromTo = cmgcFromTo.addElement();
 							CodeType aaa = new CodeType();
 							secFromTo.setCodeElement(aaa);
-							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
+							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setRelationship(ConceptMapRelationship.EQUIVALENT);
 
 							SourceElementComponent secToFrom = cmgcToFrom.addElement();
 							CodeType aaa2 = new CodeType();
 							secToFrom.setCodeElement(aaa2);
-							secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
+							secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setRelationship(ConceptMapRelationship.EQUIVALENT);
 							}
 						} else {
 							System.out.println("invalid " + line);
@@ -185,14 +183,12 @@ public class TerminologyUtil {
 							SourceElementComponent secFromTo = cmgcFromTo.addElement();
 							CodeType aaa = new CodeType();
 							secFromTo.setCodeElement(aaa);
-							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
+							secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setRelationship(ConceptMapRelationship.EQUIVALENT);
 
 							SourceElementComponent secToFrom = cmgcToFrom.addElement();
 							CodeType aaa2 = new CodeType();
 							secToFrom.setCodeElement(aaa2);
-							secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-								ConceptMapEquivalence.EQUAL);
+							secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setRelationship(ConceptMapRelationship.EQUIVALENT);
 							}
 						} else {
 							System.out.println("invalid " + line);

@@ -5,16 +5,13 @@
 	<groupId>ca.uhn.hapi.fhir</groupId>
 	<artifactId>hapi-fhir-spring-boot-sample-server-jersey</artifactId>
 	<version>4.1.0</version>
-
 	<packaging>jar</packaging>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-dynamodb</artifactId>
 			<version>1.11.443</version>
 		</dependency>
-
 		<!-- Compile -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -34,22 +31,22 @@
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-spring-boot-starter</artifactId>
-			<version>4.1.0</version>
+			<version>6.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-jaxrsserver-base</artifactId>
-			<version>4.1.0</version>
+			<version>6.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
-			<artifactId>hapi-fhir-validation-resources-dstu3</artifactId>
-			<version>4.1.0</version>
+			<artifactId>hapi-fhir-validation-resources-r5</artifactId>
+			<version>6.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
-			<artifactId>hapi-fhir-structures-dstu3</artifactId>
-			<version>4.1.0</version>
+			<artifactId>hapi-fhir-structures-r5</artifactId>
+			<version>6.4.4</version>
 		</dependency>
 		<!-- Optional -->
 		<dependency>
@@ -59,9 +56,9 @@
 			<version>2.2.0.RELEASE</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.fasterxml.jackson.core</groupId>
-    		<artifactId>jackson-databind</artifactId>
-    		<version>2.9.4</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.4</version>
 		</dependency>
 		<!-- Test -->
 		<dependency>
@@ -71,7 +68,6 @@
 			<version>2.2.0.RELEASE</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -91,9 +87,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
-
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -106,11 +99,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-
 				<configuration>
 					<mainClass>sample.fhir.server.jersey.SampleJerseyRestfulServerApplication</mainClass>
 				</configuration>
-
 				<executions>
 					<execution>
 						<goals>
@@ -118,19 +109,15 @@
 						</goals>
 					</execution>
 				</executions>
-
 			</plugin>
-			
-			 
 			<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-surefire-plugin</artifactId>
-        		<version>3.0.0-M4</version>
-        		<configuration>
-          			<skipTests>true</skipTests>
-        		</configuration>
-      		</plugin>
-			
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M4</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -172,5 +159,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
