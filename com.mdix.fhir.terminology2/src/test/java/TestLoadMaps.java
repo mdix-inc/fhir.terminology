@@ -40,7 +40,7 @@ public class TestLoadMaps {
 	// http://localhost:8080/fhir/ConceptMap/$translate?code=DIVINATION&source=VAVistA&target=http://hl7.org/fhir/ValueSet/v3-ReligiousAffiliation
 	private static IGenericClient client;
 
-	private static FhirContext ourCtx = FhirContext.forDstu3();
+	private static FhirContext ourCtx = FhirContext.forR5();
 
 	private static int ourPort = 8080;
 
@@ -161,10 +161,6 @@ public class TestLoadMaps {
 		}
 		return fileNames;
 	}
-	
-	
-	
-
 
 	@Test
 	public void loadFromMappings() throws Exception {

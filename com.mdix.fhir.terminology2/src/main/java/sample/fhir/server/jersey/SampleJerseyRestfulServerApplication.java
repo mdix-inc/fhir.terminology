@@ -33,8 +33,8 @@ public class SampleJerseyRestfulServerApplication {
         SpringApplication.run(SampleJerseyRestfulServerApplication.class, args);
     }
 
-    /*@Bean
-    public LoggingInterceptor loggingInterceptor() {
-        return new LoggingInterceptor();
-    }*/
+	/*
+	 * @Bean public LoggingInterceptor loggingInterceptor() { return new
+	 * LoggingInterceptor(); }
+	 */
 }

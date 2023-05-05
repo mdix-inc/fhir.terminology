@@ -1,5 +1,5 @@
 # Start with a base image containing Java runtime
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11
 
 # Add Maintainer Info
 LABEL maintainer="trial"
@@ -8,7 +8,7 @@ LABEL maintainer="trial"
 EXPOSE 8080
 
 # The application's jar file
-ARG JAR_FILE=target/hapi-fhir-spring-boot-sample-server-jersey-4.1.0.jar
+ARG JAR_FILE=target/hapi-fhir-spring-boot-sample-server-jersey-5.0.0.jar
 
 # Add the application's jar to the container
 COPY ${JAR_FILE} fhirspringboot.jar

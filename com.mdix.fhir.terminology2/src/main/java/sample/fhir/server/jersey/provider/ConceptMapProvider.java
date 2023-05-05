@@ -25,24 +25,10 @@ import java.util.Iterator;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.jaxrs.server.AbstractJaxRsResourceProvider;
-import ca.uhn.fhir.model.primitive.IdDt;
-import ca.uhn.fhir.model.primitive.StringDt;
-import ca.uhn.fhir.parser.IParser;
-import ca.uhn.fhir.rest.annotation.Create;
-import ca.uhn.fhir.rest.annotation.IdParam;
-import ca.uhn.fhir.rest.annotation.Operation;
-import ca.uhn.fhir.rest.annotation.OperationParam;
-import ca.uhn.fhir.rest.annotation.Read;
-import ca.uhn.fhir.rest.annotation.ResourceParam;
-import ca.uhn.fhir.rest.api.MethodOutcome;
-import ca.uhn.fhir.rest.param.StringParam;
-import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -65,6 +51,19 @@ import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.jaxrs.server.AbstractJaxRsResourceProvider;
+import ca.uhn.fhir.model.primitive.StringDt;
+import ca.uhn.fhir.rest.annotation.Create;
+import ca.uhn.fhir.rest.annotation.IdParam;
+import ca.uhn.fhir.rest.annotation.Operation;
+import ca.uhn.fhir.rest.annotation.OperationParam;
+import ca.uhn.fhir.rest.annotation.Read;
+import ca.uhn.fhir.rest.annotation.ResourceParam;
+import ca.uhn.fhir.rest.api.MethodOutcome;
+import ca.uhn.fhir.rest.param.StringParam;
+import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 
 @Component
 public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap> {
@@ -142,7 +141,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 	static HashMap<String, ConceptMap> conceptMaps = new HashMap<String, ConceptMap>();
 
 	@Read
-	public ConceptMap getResourceById(@IdParam IIdType theId) {
+	public ConceptMap getResourceById(@IdParam IdType theId) {
 
 		for (String key : conceptMaps.keySet()) {
 			System.out.println(conceptMaps.get(key).getId());
@@ -203,7 +202,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 					ParametersParameterComponent ppc = new ParametersParameterComponent();
 					ppc.setName("match");
 					CodeType codeValue = new CodeType();
-					;
+					
 					codeValue.setValue("equivalent");
 					ppc.addPart().setName("equivalence").setValue(codeValue);
 					Coding targetCoding = new Coding();
@@ -240,8 +239,8 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 		while (iterator.hasNext()) {
 			item = iterator.next();
 			System.out.println(item.toJSONPretty());
-			IParser parser = fhirContext.newJsonParser();
-			ConceptMap map = parser.parseResource(ConceptMap.class, item.toJSON());
+			IParser parser = (IParser) fhirContext.newJsonParser();
+			ConceptMap map = ((ca.uhn.fhir.parser.IParser) parser).parseResource(ConceptMap.class, item.toJSON());
 			conceptMaps.put(createKey(source, target), map);
 		}
 	}
