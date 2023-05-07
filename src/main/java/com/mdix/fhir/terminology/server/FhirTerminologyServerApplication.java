@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.hl7.fhir.dstu3.model.CodeType;
-import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
-import org.hl7.fhir.dstu3.model.UriType;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,14 +85,14 @@ public class FhirTerminologyServerApplication {
 								SourceElementComponent secFromTo = cmgcFromTo.addElement();
 								CodeType aaa = new CodeType();
 								secFromTo.setCodeElement(aaa);
-								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setEquivalence(
-									ConceptMapEquivalence.EQUAL);
+								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setRelationship(
+									ConceptMapRelationship.EQUIVALENT);
 
 								SourceElementComponent secToFrom = cmgcToFrom.addElement();
 								CodeType aaa2 = new CodeType();
 								secToFrom.setCodeElement(aaa2);
-								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setEquivalence(
-									ConceptMapEquivalence.EQUAL);
+								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setRelationship(
+									ConceptMapRelationship.EQUIVALENT);
 								isValid = true;
 							}
 						} else {
