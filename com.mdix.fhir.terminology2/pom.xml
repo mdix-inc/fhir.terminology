@@ -16,6 +16,7 @@
 		<hapi.version>5.7.0</hapi.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
+		<skipTests>false</skipTests>
 	</properties>
 
 	<dependencyManagement>
@@ -80,6 +81,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -92,6 +98,26 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+			
+ 
+
+ <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+      
+        <configuration>
+           <systemProperties>
+            <property>
+              <name>fhir.conceptmaps</name>
+              <value>conceptmaps</value>
+            </property>
+          
+          </systemProperties>
+            
+        </configuration>
+    </plugin>
+ 	
+			
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>animal-sniffer-maven-plugin</artifactId>
