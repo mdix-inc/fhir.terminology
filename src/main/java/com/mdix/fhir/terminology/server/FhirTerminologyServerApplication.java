@@ -51,7 +51,7 @@ public class FhirTerminologyServerApplication {
 			@Override
 			public void accept(Path path) {
 
-				if (path.getFileName().endsWith("ValueSet")) {
+				if (path.getFileName().toString().endsWith("ValueSet.tsv")) {
 					ValueSet valueset = new ValueSet();
 					UriType valueseturi = new UriType();
 					
