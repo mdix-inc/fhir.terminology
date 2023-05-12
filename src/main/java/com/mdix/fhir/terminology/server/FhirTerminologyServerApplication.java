@@ -30,6 +30,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.mdix.fhir.terminology.server.provider.ConceptMapProvider;
+import com.mdix.fhir.terminology.server.provider.ValueSetProvider;
 
 @SpringBootApplication
 public class FhirTerminologyServerApplication {
@@ -78,6 +79,8 @@ public class FhirTerminologyServerApplication {
 						}
 						compose.addInclude(include);
 						valueset.setCompose(compose);
+						ValueSetProvider.addValueSet(valueset);
+						logger.info("Loaded ValueSet File " + path.getFileName());
 					}catch (FHIRFormatError e) {
 						logger.error("Error loading " + path.getFileName(), e);
 					} catch (IOException e) {
