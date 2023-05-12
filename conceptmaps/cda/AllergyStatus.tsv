@@ -1,0 +1,6 @@
+CDA	http://cdamdmi/allergy-status		Condition (IF True)	http://cda/allergy-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/allergyintolerance-clinical				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+active	Active	2.16.840.1.113883.5.14				active		Active	2.16.840.1.113883.4.642.3.1372		
+aborted	Aborted	2.16.840.1.113883.5.14				inactive		Inactive	2.16.840.1.113883.4.642.3.1372		
+suspended	Suspended	2.16.840.1.113883.5.14				inactive		Inactive	2.16.840.1.113883.4.642.3.1372		
+completed	Completed	2.16.840.1.113883.5.14				resolved		Resolved	2.16.840.1.113883.4.642.3.1372		

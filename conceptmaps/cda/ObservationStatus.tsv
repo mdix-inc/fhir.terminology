@@ -1,0 +1,12 @@
+CDA	http://cdamdmi/observation-status		Condition (IF True)	http://cda/observation-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/observation-status				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+completed	completed	2.16.840.1.113883.5.14				final		Final	http://hl7.org/fhir/observation-status		
+aborted	aborted	2.16.840.1.113883.5.14				cancelled		Cancelled	http://hl7.org/fhir/observation-status		
+active	active	2.16.840.1.113883.5.14				registered		Registered	http://hl7.org/fhir/observation-status		
+cancelled	cancelled	2.16.840.1.113883.5.14				cancelled		Cancelled	http://hl7.org/fhir/observation-status		
+held	held	2.16.840.1.113883.5.14				unknown		Unknown	http://hl7.org/fhir/observation-status		
+new	new	2.16.840.1.113883.5.14				preliminary		Preliminary	http://hl7.org/fhir/observation-status		
+normal	normal	2.16.840.1.113883.5.14				registered		Registered	http://hl7.org/fhir/observation-status		
+nullified	nullified	2.16.840.1.113883.5.14				entered-in-error		Entered in Error	http://hl7.org/fhir/observation-status		
+obsolete	obsolete	2.16.840.1.113883.5.14				cancelled		Cancelled	http://hl7.org/fhir/observation-status		
+suspended	suspended	2.16.840.1.113883.5.14				cancelled		Cancelled	http://hl7.org/fhir/observation-status		

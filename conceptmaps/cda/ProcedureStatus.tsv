@@ -1,0 +1,6 @@
+CDA	http://cdamdmi/procedure-status		Condition (IF True)	http://cda/procedure-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/event-status				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+aborted	Aborted	2.16.840.1.113883.11.20.9.22				stopped		Stopped	http://hl7.org/fhir/event-status		
+active	Active	2.16.840.1.113883.11.20.9.23				in-progress		In Progress	http://hl7.org/fhir/event-status		
+cancelled	Cancelled	2.16.840.1.113883.11.20.9.24				entered-in-error		Entered in Error	http://hl7.org/fhir/event-status		
+completed	Completed	2.16.840.1.113883.11.20.9.25				completed		Completed	http://hl7.org/fhir/event-status		

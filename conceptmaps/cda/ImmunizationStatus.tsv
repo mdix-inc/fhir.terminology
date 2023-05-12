@@ -1,0 +1,12 @@
+CDA	http://cdamdmi/immunization-status			http://cda/immunization-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/immunization-status				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+aborted	aborted	2.16.840.1.113883.1.11.159331				not-done		Not Done	http://hl7.org/fhir/event-status		
+active	active	2.16.840.1.113883.1.11.159331									
+cancelled	cancelled	2.16.840.1.113883.1.11.159331									
+completed	completed	2.16.840.1.113883.1.11.159331				completed		Completed	http://hl7.org/fhir/event-status		
+held	held	2.16.840.1.113883.1.11.159331									
+new	new	2.16.840.1.113883.1.11.159331									
+normal	normal	2.16.840.1.113883.1.11.159331									
+nullified	nullified	2.16.840.1.113883.1.11.159331				entered-in-error		Entered In Error	http://hl7.org/fhir/event-status		
+obsolete	obsolete	2.16.840.1.113883.1.11.159331									
+suspended	suspended	2.16.840.1.113883.1.11.159331									

@@ -1,0 +1,9 @@
+CDA	http://cdamdmi/allergy-clinical-status			http://cda/allergy-clinical-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/allergyintolerance-clinical				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+aborted	Aborted	2.16.840.1.113883.5.14				inactive		Inactive	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		
+active	Active	2.16.840.1.113883.5.14				active		Active	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		
+completed	Completed	2.16.840.1.113883.5.14				resolved		Resolved	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		
+suspended	Suspended	2.16.840.1.113883.5.14				inactive		Inactive	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		
+55561003	Active (qualifier value)	2.16.840.1.113883.6.96				active		Active	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		
+73425007	Inactive (qualifier value)	2.16.840.1.113883.6.96				inactive		Inactive	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		
+413322009	Problem resolved (finding)	2.16.840.1.113883.6.96				resolved		Resolved	http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical		

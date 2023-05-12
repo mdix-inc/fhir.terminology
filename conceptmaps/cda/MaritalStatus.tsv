@@ -1,0 +1,13 @@
+CDA	http://cdamdmi/maritalstatus		Condition (IF True)	http://cda/maritalstatus		HL7 FHIR	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+A	Annulled	2.16.840.1.113883.1.11.12212				A		Annulled	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+D	Divorced	2.16.840.1.113883.1.11.12212				D		Divorced	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+T	Domestic partner	2.16.840.1.113883.1.11.12212				T		Domestic partner	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+I	Interlocutory	2.16.840.1.113883.1.11.12212				I		Interlocutory	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+L	Legally Separated	2.16.840.1.113883.1.11.12212				L		Legally Separated	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+M	Married	2.16.840.1.113883.1.11.12212				M		Married	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+S	Never Married	2.16.840.1.113883.1.11.12212				S		Never Married	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+P	Polygamous	2.16.840.1.113883.1.11.12212				P		Polygamous	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+W	Widowed	2.16.840.1.113883.1.11.12212				W		Widowed	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+						U		Unmarried	http://terminology.hl7.org/CodeSystem/v3-MaritalStatus		
+						UNK		unknown	http://terminology.hl7.org/CodeSystem/v3-NullFlavor		

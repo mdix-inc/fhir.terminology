@@ -1,0 +1,15 @@
+CDA	http://cdamdmi/medication-administration-status		Condition (IF True)	http://cda/medication-administration-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/medication-admin-status				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+aborted	aborted	2.16.840.1.113883.1.11.159331									
+active	active	2.16.840.1.113883.1.11.159331				in-progress		In Progress	http://terminology.hl7.org/CodeSystem/medication-admin-status		
+cancelled	cancelled	2.16.840.1.113883.1.11.159331									
+completed	completed	2.16.840.1.113883.1.11.159331				completed		Completed	http://terminology.hl7.org/CodeSystem/medication-admin-status		
+held	held	2.16.840.1.113883.1.11.159331				on-hold		On Hold	http://terminology.hl7.org/CodeSystem/medication-admin-status		
+new	new	2.16.840.1.113883.1.11.159331									
+normal	normal	2.16.840.1.113883.1.11.159331									
+nullified	nullified	2.16.840.1.113883.1.11.159331									
+obsolete	obsolete	2.16.840.1.113883.1.11.159331									
+suspended	suspended	2.16.840.1.113883.1.11.159331				stopped		Stopped	http://terminology.hl7.org/CodeSystem/medication-admin-status		
+						not-done		Not Done	http://terminology.hl7.org/CodeSystem/medication-admin-status		
+						entered-in-error		Entered in Error	http://terminology.hl7.org/CodeSystem/medication-admin-status		
+						unknown		Unknown	http://terminology.hl7.org/CodeSystem/medication-admin-status		

@@ -86,13 +86,13 @@ public class FhirTerminologyServerApplication {
 								CodeType aaa = new CodeType();
 								secFromTo.setCodeElement(aaa);
 								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setRelationship(
-									ConceptMapRelationship.EQUIVALENT);
+									ConceptMapRelationship.EQUIVALENT).setDisplay(code2code[8]);
 
 								SourceElementComponent secToFrom = cmgcToFrom.addElement();
 								CodeType aaa2 = new CodeType();
 								secToFrom.setCodeElement(aaa2);
 								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setRelationship(
-									ConceptMapRelationship.EQUIVALENT);
+									ConceptMapRelationship.EQUIVALENT).setDisplay(code2code[1]);
 								isValid = true;
 							}
 						} else {

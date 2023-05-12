@@ -1,0 +1,5 @@
+CDA	http://cdamdmi/allergy-reaction-severity		Condition (IF True)	http://cda/allergy-reaction-severity		HL7 FHIR	http://hl7.org/fhir/ValueSet/reaction-event-severity				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+24484000	Severe (severity modifier) (qualifier value) 	2.16.840.1.113883.6.96				severe		Severe	http://hl7.org/fhir/reaction-event-severity		
+255604002	Mild (qualifier value)	2.16.840.1.113883.6.96				mild		Mild	http://hl7.org/fhir/reaction-event-severity		
+6736007	Moderate (severity modifier) (qualifier value)	2.16.840.1.113883.6.96				moderate		Moderate	http://hl7.org/fhir/reaction-event-severity		

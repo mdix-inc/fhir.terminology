@@ -1,0 +1,4 @@
+CDA	https://phinvads.cdc.gov/vads/ViewValueSet.action?id=35D34BBC-617F-DD11-B38D-00188B398520		Condition (IF True)			HL7 FHIR	http://hl7.org/fhir/us/core/ValueSet/omb-ethnicity-category				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+2135-2	Hispanic or Latino	2.16.840.1.113883.6.238				2135-2		Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		
+2186-5	Not Hispanic or Latino	2.16.840.1.113883.6.238				2186-5		Non Hispanic or Latino	urn:oid:2.16.840.1.113883.6.238		

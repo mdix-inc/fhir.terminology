@@ -1,0 +1,13 @@
+CDA	http://cdamdmi/allergy-category		Condition (IF True)	http://cda/allergy-category		HL7 FHIR	http://hl7.org/fhir/ValueSet/allergy-intolerance-category				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+419199007	Allergy to substance (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				medication		Medication	http://hl7.org/fhir/allergy-intolerance-category		
+416098002	Drug allergy (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				medication		Medication	http://hl7.org/fhir/allergy-intolerance-category		
+59037007	Drug intolerance (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				medication		Medication	http://hl7.org/fhir/allergy-intolerance-category		
+414285001	Food allergy (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				food		Food	http://hl7.org/fhir/allergy-intolerance-category		
+235719002	Food intolerance (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				food		Food	http://hl7.org/fhir/allergy-intolerance-category		
+420134006	Propensity to adverse reactions (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				environment		Environment	http://hl7.org/fhir/allergy-intolerance-category		
+419511003	Propensity to adverse reactions to drug (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				medication		Medication	http://hl7.org/fhir/allergy-intolerance-category		
+418471000	Propensity to adverse reactions to food (disorder)	2.16.840.1.113883.3.88.12.3221.6.2				food		Food	http://hl7.org/fhir/allergy-intolerance-category		
+418038007	Propensity to adverse reactions to substance (disorder)	2.16.840.1.113883.3.88.12.3221.6.2									
+						environment		Environment			
+						biologic		Biologic			

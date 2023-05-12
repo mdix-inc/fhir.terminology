@@ -1,0 +1,10 @@
+CDA	http://cdamdmi/condition-status		Condition (IF True)	http://cda/condition-status		HL7 FHIR	http://hl7.org/fhir/ValueSet/condition-clinical				Comments
+Code	Text	Code System	Computable ANTLR	Computable FHIRPath	Narrative	Code		Display	Code System		
+aborted	aborted	2.16.840.1.113883.5.14				inactive		Inactive	http://terminology.hl7.org/CodeSystem/condition-clinical		
+active	active	2.16.840.1.113883.5.14				active		Active	http://terminology.hl7.org/CodeSystem/condition-clinical		
+cancelled	cancelled	2.16.840.1.113883.5.14				inactive		Inactive	http://terminology.hl7.org/CodeSystem/condition-clinical		
+completed	completed	2.16.840.1.113883.5.14				resolved		Resolved	http://terminology.hl7.org/CodeSystem/condition-clinical		
+held	held	2.16.840.1.113883.5.14				remission		Remission	http://terminology.hl7.org/CodeSystem/condition-clinical		
+suspended	suspended	2.16.840.1.113883.5.14									
+						recurrence		Recurrence	http://terminology.hl7.org/CodeSystem/condition-clinical		
+						relapse		Relapse	http://terminology.hl7.org/CodeSystem/condition-clinical		
