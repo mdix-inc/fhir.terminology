@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,6 +18,10 @@ import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,77 +51,118 @@ public class FhirTerminologyServerApplication {
 			@Override
 			public void accept(Path path) {
 
-				ConceptMap conceptMapFromTo = new ConceptMap();
-				ConceptMap conceptMapToFrom = new ConceptMap();
-				ConceptMapGroupComponent cmgcFromTo = conceptMapFromTo.addGroup();
-				ConceptMapGroupComponent cmgcToFrom = conceptMapToFrom.addGroup();
-				int count = 0;
-				boolean isValid = false;
+				if (path.getFileName().endsWith("ValueSet.tsv")) {
+					ValueSet valueset = new ValueSet();
+					UriType valueseturi = new UriType();
+					
+					ValueSetComposeComponent compose = new ValueSetComposeComponent();
+					ConceptSetComponent include = new ConceptSetComponent();
+					int count = 0;
+					try {
+						for (String line : Files.readAllLines(path)) {
 
-				try {
-					for (String line : Files.readAllLines(path)) {
-
-						String[] code2code = line.toString().split("\t");
-						if (count < 2) {
-							count++;
-							continue;
-						}
-						if (code2code.length == 10) {
-
-							UriType sourceuri = new UriType();
-							sourceuri.setValue(code2code[2]);
-
-							conceptMapFromTo.setSource(sourceuri);
-							conceptMapToFrom.setTarget(sourceuri);
-
-							UriType targeturi = new UriType();
-							targeturi.setValue(code2code[9]);
-
-							conceptMapFromTo.setTarget(targeturi);
-							conceptMapToFrom.setSource(targeturi);
-
-							cmgcFromTo.setSource(code2code[2]);
-							cmgcFromTo.setTarget(code2code[9]);
-
-							cmgcToFrom.setTarget(code2code[2]);
-							cmgcToFrom.setSource(code2code[9]);
-
-							if ((code2code[0] != null && !code2code[0].contentEquals("")) &&
-									(code2code[6] != null && !code2code[6].contentEquals(""))) {
-								SourceElementComponent secFromTo = cmgcFromTo.addElement();
-								CodeType aaa = new CodeType();
-								secFromTo.setCodeElement(aaa);
-								secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6]).setRelationship(
-									ConceptMapRelationship.EQUIVALENT).setDisplay(code2code[8]);
-
-								SourceElementComponent secToFrom = cmgcToFrom.addElement();
-								CodeType aaa2 = new CodeType();
-								secToFrom.setCodeElement(aaa2);
-								secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0]).setRelationship(
-									ConceptMapRelationship.EQUIVALENT).setDisplay(code2code[1]);
-								isValid = true;
+							String[] code2code = line.toString().split("\t");
+							if (count == 0) {
+								if(code2code[1] != null && !code2code[1].contentEquals("")) {
+									valueseturi.setValue(code2code[1]);
+									valueset.setUrlElement(valueseturi);
+									
+								}
+								count++;
+								continue;
 							}
-						} else {
-							logger.error(
-								"Incomplete mapping " + path.getFileName() + " At line " + String.valueOf(count) +
-										" :: " + line);
+							if(count < 2) {
+								include.addConcept().setCode(code2code[0]).setDisplay(code2code[1]);
+							}else
+								count++;
 						}
-					}
-					if (isValid) {
-						ConceptMapProvider.addConceptMap(conceptMapToFrom);
-						ConceptMapProvider.addConceptMap(conceptMapFromTo);
-						logger.info("Loaded Mapping File " + path.getFileName());
-					} else {
-						logger.info("Did not load Mapping File " + path.getFileName());
+						compose.addInclude(include);
+						valueset.setCompose(compose);
+					}catch (FHIRFormatError e) {
+						logger.error("Error loading " + path.getFileName(), e);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						logger.error("Error loading " + path.getFileName(), e);
+					} 
+					
+				} else {
+					ConceptMap conceptMapFromTo = new ConceptMap();
+					ConceptMap conceptMapToFrom = new ConceptMap();
+					ConceptMapGroupComponent cmgcFromTo = conceptMapFromTo.addGroup();
+					ConceptMapGroupComponent cmgcToFrom = conceptMapToFrom.addGroup();
+					int count = 0;
+					boolean isValid = false;
+					UriType sourceuri = new UriType();
+					UriType targeturi = new UriType();
+					
+					try {
+						for (String line : Files.readAllLines(path)) {
 
-					}
+							String[] code2code = line.toString().split("\t");
+							if (count < 2) {
+								if(count == 0) {
+									if((code2code[1] != null && !code2code[1].contentEquals(""))
+											&& (code2code[7] != null && !code2code[7].contentEquals(""))) {
+										sourceuri.setValue(code2code[1]);
+										targeturi.setValue(code2code[7]);
+									}
+								}
+								count++;
+								continue;
+							}
+							if (code2code.length >= 10) {
 
-				} catch (FHIRFormatError e) {
-					logger.error("Error loading " + path.getFileName(), e);
-				} catch (IOException e) {
-					logger.error("Error loading " + path.getFileName(), e);
+								conceptMapFromTo.setSource(sourceuri);
+								conceptMapToFrom.setTarget(sourceuri);
+
+								conceptMapFromTo.setTarget(targeturi);
+								conceptMapToFrom.setSource(targeturi);
+
+								cmgcFromTo.setSource(code2code[2]);
+								cmgcFromTo.setTarget(code2code[9]);
+
+								cmgcToFrom.setTarget(code2code[2]);
+								cmgcToFrom.setSource(code2code[9]);
+
+								if ((code2code[0] != null && !code2code[0].contentEquals(""))
+										&& (code2code[6] != null && !code2code[6].contentEquals(""))) {
+									SourceElementComponent secFromTo = cmgcFromTo.addElement();
+									CodeType aaa = new CodeType();
+									secFromTo.setCodeElement(aaa);
+									secFromTo.setCode(code2code[0]).addTarget().setCode(code2code[6])
+											.setRelationship(ConceptMapRelationship.EQUIVALENT)
+											.setDisplay(code2code[8]);
+
+									SourceElementComponent secToFrom = cmgcToFrom.addElement();
+									CodeType aaa2 = new CodeType();
+									secToFrom.setCodeElement(aaa2);
+									secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0])
+											.setRelationship(ConceptMapRelationship.EQUIVALENT)
+											.setDisplay(code2code[1]);
+									isValid = true;
+								}
+							} else {
+								logger.error("Incomplete mapping " + path.getFileName() + " At line "
+										+ String.valueOf(count) + " :: " + line);
+							}
+						}
+						if (isValid) {
+							ConceptMapProvider.addConceptMap(conceptMapToFrom);
+							ConceptMapProvider.addConceptMap(conceptMapFromTo);
+							logger.info("Loaded Mapping File " + path.getFileName());
+						} else {
+							logger.info("Did not load Mapping File " + path.getFileName());
+
+						}
+
+					} catch (FHIRFormatError e) {
+						logger.error("Error loading " + path.getFileName(), e);
+					} catch (IOException e) {
+						logger.error("Error loading " + path.getFileName(), e);
+					}
 				}
 			}
+
 		};
 
 		try {
@@ -131,7 +178,8 @@ public class FhirTerminologyServerApplication {
 
 		//
 		// Set<Path> folders = Files.find(
-		// Paths.get(mapsFolder), Integer.MAX_VALUE, (filePath, fileAttr) -> fileAttr.isDirectory()).collect(
+		// Paths.get(mapsFolder), Integer.MAX_VALUE, (filePath, fileAttr) ->
+		// fileAttr.isDirectory()).collect(
 		// Collectors.toSet());
 		//
 		// for (Path folder : folders) {
@@ -141,12 +189,15 @@ public class FhirTerminologyServerApplication {
 		// paths.filter(Files::isRegularFile).forEach(loadConceptMap);
 		// }
 		//
-		// // Set<String> maps = Stream.of(new File(folder.toString()).listFiles()).filter(
-		// // file -> (!file.isDirectory() && file.toString().endsWith("mdmi"))).map(File::getName).collect(
+		// // Set<String> maps = Stream.of(new
+		// File(folder.toString()).listFiles()).filter(
+		// // file -> (!file.isDirectory() &&
+		// file.toString().endsWith("mdmi"))).map(File::getName).collect(
 		// // Collectors.toSet());
 		// // for (String map : maps) {
 		// // logger.trace("Loading conceptmapsFolders " + map);
-		// // InputStream targetStream = new FileInputStream(folder.toString() + "/" + map);
+		// // InputStream targetStream = new FileInputStream(folder.toString() + "/" +
+		// map);
 		// //
 		// //
 		// //
@@ -160,10 +211,12 @@ public class FhirTerminologyServerApplication {
 		// e.printStackTrace();
 		// }
 		// try {
-		// for (String mapsFolder : Stream.of(conceptmapsFolders.split(",", -1)).collect(Collectors.toList())) {
+		// for (String mapsFolder : Stream.of(conceptmapsFolders.split(",",
+		// -1)).collect(Collectors.toList())) {
 		//
 		// Set<Path> folders = Files.find(
-		// Paths.get(mapsFolder), Integer.MAX_VALUE, (filePath, fileAttr) -> fileAttr.isDirectory()).collect(
+		// Paths.get(mapsFolder), Integer.MAX_VALUE, (filePath, fileAttr) ->
+		// fileAttr.isDirectory()).collect(
 		// Collectors.toSet());
 		//
 		// }
@@ -185,7 +238,8 @@ public class FhirTerminologyServerApplication {
 	//
 	// if (loaded || lastModified == 0) {
 	// long currentModified = 0;
-	// for (String mapsFolder : Stream.of(mapsFolders.split(",", -1)).collect(Collectors.toList())) {
+	// for (String mapsFolder : Stream.of(mapsFolders.split(",",
+	// -1)).collect(Collectors.toList())) {
 	//
 	// Set<Path> folders = Files.find(
 	// Paths.get(mapsFolder), Integer.MAX_VALUE,
@@ -234,34 +288,40 @@ public class FhirTerminologyServerApplication {
 	//
 	// FHIRTerminologyTransform.setPassword(terminologySettings.getPassword());
 	//
-	// for (String mapsFolder : Stream.of(mapsFolders.split(",", -1)).collect(Collectors.toList())) {
+	// for (String mapsFolder : Stream.of(mapsFolders.split(",",
+	// -1)).collect(Collectors.toList())) {
 	//
 	// Set<Path> folders = Files.find(
-	// Paths.get(mapsFolder), Integer.MAX_VALUE, (filePath, fileAttr) -> fileAttr.isDirectory()).collect(
+	// Paths.get(mapsFolder), Integer.MAX_VALUE, (filePath, fileAttr) ->
+	// fileAttr.isDirectory()).collect(
 	// Collectors.toSet());
 	//
 	// for (Path folder : folders) {
 	//
 	// Set<String> maps = Stream.of(new File(folder.toString()).listFiles()).filter(
-	// file -> (!file.isDirectory() && file.toString().endsWith("mdmi"))).map(File::getName).collect(
+	// file -> (!file.isDirectory() &&
+	// file.toString().endsWith("mdmi"))).map(File::getName).collect(
 	// Collectors.toSet());
 	// for (String map : maps) {
 	// logger.trace("Loading map " + map);
-	// InputStream targetStream = new FileInputStream(folder.toString() + "/" + map);
+	// InputStream targetStream = new FileInputStream(folder.toString() + "/" +
+	// map);
 	// Mdmi.INSTANCE().getResolver().resolve(targetStream);
 	// logger.trace("Loaded map " + map);
 	// }
 	//
 	// System.err.println(folder.toString() + "/terms");
 	//
-	// Set<String> datatypeterms = Stream.of(new File(folder.toString() + "/terms").listFiles()).filter(
+	// Set<String> datatypeterms = Stream.of(new File(folder.toString() +
+	// "/terms").listFiles()).filter(
 	// file -> (!file.isDirectory() && file.toString().endsWith("properties"))).map(
 	// File::getName).collect(Collectors.toSet());
 	// for (String datatypeterm : datatypeterms) {
 	// logger.trace("Loading datatypeterm " + datatypeterm);
 	// InputStream datatypetermStream = new FileInputStream(
 	// folder.toString() + "/terms/" + datatypeterm);
-	// Utils.mapOfTransforms.put(FilenameUtils.removeExtension(datatypeterm), new Properties());
+	// Utils.mapOfTransforms.put(FilenameUtils.removeExtension(datatypeterm), new
+	// Properties());
 	// Utils.mapOfTransforms.get(FilenameUtils.removeExtension(datatypeterm)).load(datatypetermStream);
 	// // Mdmi.INSTANCE().getResolver().resolve(targetStream);
 	// logger.trace("Loaded map " + datatypeterm);
@@ -269,11 +329,13 @@ public class FhirTerminologyServerApplication {
 	//
 	// logger.trace("Check for processors.yml ");
 	// logger.trace("Looking for " + folder.toString() + "/" + "processors.yml");
-	// logger.trace("EXISTS " + Files.exists(Paths.get(folder.toString() + "/" + "processors.yml")));
+	// logger.trace("EXISTS " + Files.exists(Paths.get(folder.toString() + "/" +
+	// "processors.yml")));
 	// if (Files.exists(Paths.get(folder.toString() + "/" + "processors.yml"))) {
 	// logger.trace("Found processors.yml ");
 	// Yaml processorYaml = new Yaml();
-	// InputStream inputStream = new FileInputStream(folder.toString() + "/" + "processors.yml");
+	// InputStream inputStream = new FileInputStream(folder.toString() + "/" +
+	// "processors.yml");
 	// Map<String, Object> obj = processorYaml.load(inputStream);
 	//
 	// if (obj.containsKey("preprocessors")) {
@@ -284,11 +346,13 @@ public class FhirTerminologyServerApplication {
 	// }
 	//
 	// if (obj.containsKey("sourcesemanticprocessors")) {
-	// sourcesemanticprocessors.add((Map<String, Object>) obj.get("sourcesemanticprocessors"));
+	// sourcesemanticprocessors.add((Map<String, Object>)
+	// obj.get("sourcesemanticprocessors"));
 	// }
 	//
 	// if (obj.containsKey("targetsemanticprocessors")) {
-	// targetsemanticprocessors.add((Map<String, Object>) obj.get("targetsemanticprocessors"));
+	// targetsemanticprocessors.add((Map<String, Object>)
+	// obj.get("targetsemanticprocessors"));
 	// }
 	//
 	// }
@@ -362,7 +426,8 @@ public class FhirTerminologyServerApplication {
 	// }
 	// } else {
 	// logger.error(
-	// "Incomplete mapping " + path.getFileName() + " At line " + String.valueOf(count) +
+	// "Incomplete mapping " + path.getFileName() + " At line " +
+	// String.valueOf(count) +
 	// " :: " + line);
 	// }
 	// }

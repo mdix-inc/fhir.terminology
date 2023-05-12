@@ -1,0 +1,11 @@
+ValueSet	http://hl7.org/fhir/ValueSet/observation-category	
+Code	Display	Code System
+social-history	Social History	http://terminology.hl7.org/CodeSystem/observation-category
+vital-signs	Vital Signs	http://terminology.hl7.org/CodeSystem/observation-category
+imaging	Imaging	http://terminology.hl7.org/CodeSystem/observation-category
+laboratory	Laboratory	http://terminology.hl7.org/CodeSystem/observation-category
+procedure	Procedure	http://terminology.hl7.org/CodeSystem/observation-category
+survey	Survey	http://terminology.hl7.org/CodeSystem/observation-category
+exam	Exam	http://terminology.hl7.org/CodeSystem/observation-category
+therapy	Therapy	http://terminology.hl7.org/CodeSystem/observation-category
+activity	Activity	http://terminology.hl7.org/CodeSystem/observation-category
