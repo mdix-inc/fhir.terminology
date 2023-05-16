@@ -9,7 +9,7 @@
 
 	<properties>
 		<spring_boot_version>2.6.2</spring_boot_version>
-		<hapi.version>5.7.0</hapi.version>
+		<hapi.version>6.4.4</hapi.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<skipTests>false</skipTests>

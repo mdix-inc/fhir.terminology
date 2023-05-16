@@ -15,6 +15,8 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.springframework.stereotype.Component;
@@ -56,7 +58,7 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 	public static ConceptMap addConceptMap(ConceptMap theConceptMap) {
 		theConceptMap.setId(createId(++myNextId, 1l));
 		conceptMaps.put(
-			createKey(theConceptMap.getSourceUriType().getValue(), theConceptMap.getTargetUriType().getValue()),
+			createKey(theConceptMap.getSourceScopeUriType().getValue(), theConceptMap.getTargetScopeUriType().getValue()),
 			theConceptMap);
 		return theConceptMap;
 	}
@@ -72,6 +74,26 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 
 	private static String createKey(String source, String target) {
 		return source + "TO" + target;
+	}
+	
+	private static boolean containsCode(String key, String code) {
+		boolean flag = false;
+		ValueSet valueset = ValueSetProvider.getValueSet(key);
+		
+		if(valueset == null) {
+			return flag;
+		}else {
+			for(ConceptSetComponent include : valueset.getCompose().getInclude()) {
+				for(ConceptReferenceComponent comp : include.getConcept()) {
+					if(comp.getCode().equals(code)) {
+						flag = true;
+						return flag;
+					}
+						
+				}
+			}
+		}
+		return flag;
 	}
 
 	static HashMap<String, ConceptMap> conceptMaps = new HashMap<>();
@@ -120,6 +142,28 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 			for (SourceElementComponent sourceElementComponent : conceptMapGroupComponent.getElement()) {
 				// System.out.println("testing:"+sourceElementComponent.getCode());
 				if (sourceElementComponent.hasTarget() && sourceElementComponent.getCode().equals(code.getValue())) {
+					value.setValue(true);
+					TargetElementComponent tec = sourceElementComponent.getTargetFirstRep();
+
+					parameters.getParameterFirstRep().setValue(value);
+					// parameters.addParameter().setName("result").setValue(value);
+					ParametersParameterComponent ppc = new ParametersParameterComponent();
+					ppc.setName("match");
+					CodeType codeValue = new CodeType();
+
+					codeValue.setValue("equivalent");
+					ppc.addPart().setName("equivalence").setValue(codeValue);
+					Coding targetCoding = new Coding();
+					targetCoding.setCode(tec.getCode());
+					targetCoding.setDisplay(tec.getDisplay());
+
+					// UriType targetURI = (UriType) conceptMap.getTarget();
+					targetCoding.setSystem(conceptMapGroupComponent.getTarget());
+					targetCoding.setUserSelected(false);
+
+					ppc.addPart().setName("concept").setValue(targetCoding);
+					parameters.addParameter(ppc);
+				}else if (sourceElementComponent.hasTarget() && containsCode(sourceElementComponent.getValueSet(),code.getValue())) {
 					value.setValue(true);
 					TargetElementComponent tec = sourceElementComponent.getTargetFirstRep();
 

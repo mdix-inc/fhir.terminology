@@ -55,7 +55,7 @@ public class FhirTerminologyServerApplication {
 				if (path.getFileName().toString().endsWith("ValueSet.tsv")) {
 					ValueSet valueset = new ValueSet();
 					UriType valueseturi = new UriType();
-					
+
 					ValueSetComposeComponent compose = new ValueSetComposeComponent();
 					ConceptSetComponent include = new ConceptSetComponent();
 					int count = 0;
@@ -64,30 +64,31 @@ public class FhirTerminologyServerApplication {
 
 							String[] code2code = line.toString().split("\t");
 							if (count == 0) {
-								if(code2code[1] != null && !code2code[1].contentEquals("")) {
+								if (code2code[1] != null && !code2code[1].contentEquals("")) {
 									valueseturi.setValue(code2code[1]);
 									valueset.setUrlElement(valueseturi);
-									
+
 								}
 								count++;
 								continue;
 							}
-							if(count < 2) {
+							if (count > 1) {
 								include.addConcept().setCode(code2code[0]).setDisplay(code2code[1]);
-							}else
+								count++;
+							} else
 								count++;
 						}
 						compose.addInclude(include);
 						valueset.setCompose(compose);
 						ValueSetProvider.addValueSet(valueset);
 						logger.info("Loaded ValueSet File " + path.getFileName());
-					}catch (FHIRFormatError e) {
+					} catch (FHIRFormatError e) {
 						logger.error("Error loading " + path.getFileName(), e);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						logger.error("Error loading " + path.getFileName(), e);
-					} 
-					
+					}
+
 				} else {
 					ConceptMap conceptMapFromTo = new ConceptMap();
 					ConceptMap conceptMapToFrom = new ConceptMap();
@@ -97,14 +98,14 @@ public class FhirTerminologyServerApplication {
 					boolean isValid = false;
 					UriType sourceuri = new UriType();
 					UriType targeturi = new UriType();
-					
+
 					try {
 						for (String line : Files.readAllLines(path)) {
 
 							String[] code2code = line.toString().split("\t");
 							if (count < 2) {
-								if(count == 0) {
-									if((code2code[1] != null && !code2code[1].contentEquals(""))
+								if (count == 0) {
+									if ((code2code[1] != null && !code2code[1].contentEquals(""))
 											&& (code2code[7] != null && !code2code[7].contentEquals(""))) {
 										sourceuri.setValue(code2code[1]);
 										targeturi.setValue(code2code[7]);
@@ -115,11 +116,11 @@ public class FhirTerminologyServerApplication {
 							}
 							if (code2code.length >= 10) {
 
-								conceptMapFromTo.setSource(sourceuri);
-								conceptMapToFrom.setTarget(sourceuri);
+								conceptMapFromTo.setSourceScope(sourceuri);
+								conceptMapToFrom.setTargetScope(sourceuri);
 
-								conceptMapFromTo.setTarget(targeturi);
-								conceptMapToFrom.setSource(targeturi);
+								conceptMapFromTo.setTargetScope(targeturi);
+								conceptMapToFrom.setSourceScope(targeturi);
 
 								cmgcFromTo.setSource(code2code[2]);
 								cmgcFromTo.setTarget(code2code[9]);
@@ -142,6 +143,27 @@ public class FhirTerminologyServerApplication {
 									secToFrom.setCode(code2code[6]).addTarget().setCode(code2code[0])
 											.setRelationship(ConceptMapRelationship.EQUIVALENT)
 											.setDisplay(code2code[1]);
+
+									isValid = true;
+								} else if ((code2code[3] != null && !code2code[3].contentEquals(""))
+										&& (code2code[6] != null && !code2code[6].contentEquals(""))) {
+									SourceElementComponent secFromTo = cmgcFromTo.addElement();
+									CodeType aaa = new CodeType();
+									secFromTo.setCodeElement(aaa);
+									secFromTo.setValueSet(code2code[3]).addTarget().setCode(code2code[6])
+											.setRelationship(ConceptMapRelationship.EQUIVALENT)
+											.setDisplay(code2code[8]);
+
+									isValid = true;
+								}else if ((code2code[0] != null && !code2code[0].contentEquals(""))
+										&& (code2code[10] != null && !code2code[10].contentEquals(""))) {
+									SourceElementComponent secToFrom = cmgcToFrom.addElement();
+									CodeType aaa2 = new CodeType();
+									secToFrom.setCodeElement(aaa2);
+									secToFrom.setValueSet(code2code[10]).addTarget().setCode(code2code[0])
+											.setRelationship(ConceptMapRelationship.EQUIVALENT)
+											.setDisplay(code2code[1]);
+
 									isValid = true;
 								}
 							} else {

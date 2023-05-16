@@ -83,6 +83,10 @@ public class ValueSetProvider extends AbstractJaxRsResourceProvider<ValueSet> {
 		}
 		throw new ResourceNotFoundException(theId);
 	}
+	
+	protected static ValueSet getValueSet(String key) {
+		return valueSets.get(key);
+	}
 
 	@Search
 	public Collection<ValueSet> getAllValueSets() {
