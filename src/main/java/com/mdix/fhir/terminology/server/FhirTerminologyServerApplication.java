@@ -155,7 +155,8 @@ public class FhirTerminologyServerApplication {
 											.setDisplay(code2code[8]);
 
 									isValid = true;
-								}else if ((code2code[0] != null && !code2code[0].contentEquals(""))
+								}else if(code2code.length > 10) {
+									if ((code2code[0] != null && !code2code[0].contentEquals(""))
 										&& (code2code[10] != null && !code2code[10].contentEquals(""))) {
 									SourceElementComponent secToFrom = cmgcToFrom.addElement();
 									CodeType aaa2 = new CodeType();
@@ -166,6 +167,7 @@ public class FhirTerminologyServerApplication {
 
 									isValid = true;
 								}
+									}
 							} else {
 								logger.error("Incomplete mapping " + path.getFileName() + " At line "
 										+ String.valueOf(count) + " :: " + line);
