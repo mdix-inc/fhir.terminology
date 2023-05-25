@@ -94,6 +94,31 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 		}
 		return flag;
 	}
+	
+	private static Parameters updateParameters(Parameters parameters, BooleanType value, SourceElementComponent sourceElementComponent, ConceptMapGroupComponent conceptMapGroupComponent) {
+		value.setValue(true);
+		TargetElementComponent tec = sourceElementComponent.getTargetFirstRep();
+
+		parameters.getParameterFirstRep().setValue(value);
+		// parameters.addParameter().setName("result").setValue(value);
+		ParametersParameterComponent ppc = new ParametersParameterComponent();
+		ppc.setName("match");
+		CodeType codeValue = new CodeType();
+
+		codeValue.setValue("equivalent");
+		ppc.addPart().setName("equivalence").setValue(codeValue);
+		Coding targetCoding = new Coding();
+		targetCoding.setCode(tec.getCode());
+		targetCoding.setDisplay(tec.getDisplay());
+
+		// UriType targetURI = (UriType) conceptMap.getTarget();
+		targetCoding.setSystem(conceptMapGroupComponent.getTarget());
+		targetCoding.setUserSelected(false);
+
+		ppc.addPart().setName("concept").setValue(targetCoding);
+		parameters.addParameter(ppc);
+		return parameters;	
+	}
 
 	static HashMap<String, ConceptMap> conceptMaps = new HashMap<>();
 
@@ -142,51 +167,11 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 				// System.out.println("testing:"+sourceElementComponent.getCode());
 				if (sourceElementComponent.hasTarget() && sourceElementComponent.hasCode()) {
 					if (sourceElementComponent.getCode().equals(code.getValue())) {
-						value.setValue(true);
-						TargetElementComponent tec = sourceElementComponent.getTargetFirstRep();
-
-						parameters.getParameterFirstRep().setValue(value);
-						// parameters.addParameter().setName("result").setValue(value);
-						ParametersParameterComponent ppc = new ParametersParameterComponent();
-						ppc.setName("match");
-						CodeType codeValue = new CodeType();
-
-						codeValue.setValue("equivalent");
-						ppc.addPart().setName("equivalence").setValue(codeValue);
-						Coding targetCoding = new Coding();
-						targetCoding.setCode(tec.getCode());
-						targetCoding.setDisplay(tec.getDisplay());
-
-						// UriType targetURI = (UriType) conceptMap.getTarget();
-						targetCoding.setSystem(conceptMapGroupComponent.getTarget());
-						targetCoding.setUserSelected(false);
-
-						ppc.addPart().setName("concept").setValue(targetCoding);
-						parameters.addParameter(ppc);
+						parameters = updateParameters(parameters, value, sourceElementComponent, conceptMapGroupComponent);
 					}
 				} else if (sourceElementComponent.hasTarget() && sourceElementComponent.hasValueSet()) {
 					if (containsCode(sourceElementComponent.getValueSet(), code.getValue())) {
-						value.setValue(true);
-						TargetElementComponent tec = sourceElementComponent.getTargetFirstRep();
-
-						parameters.getParameterFirstRep().setValue(value);
-						// parameters.addParameter().setName("result").setValue(value);
-						ParametersParameterComponent ppc = new ParametersParameterComponent();
-						ppc.setName("match");
-						CodeType codeValue = new CodeType();
-
-						codeValue.setValue("equivalent");
-						ppc.addPart().setName("equivalence").setValue(codeValue);
-						Coding targetCoding = new Coding();
-						targetCoding.setCode(tec.getCode());
-						targetCoding.setDisplay(tec.getDisplay());
-
-						// UriType targetURI = (UriType) conceptMap.getTarget();
-						targetCoding.setSystem(conceptMapGroupComponent.getTarget());
-						targetCoding.setUserSelected(false);
-
-						ppc.addPart().setName("concept").setValue(targetCoding);
-						parameters.addParameter(ppc);
+						parameters = updateParameters(parameters, value, sourceElementComponent, conceptMapGroupComponent);
 					}
 				}
 
