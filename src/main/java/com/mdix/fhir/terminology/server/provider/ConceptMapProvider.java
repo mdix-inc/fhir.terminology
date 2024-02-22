@@ -18,6 +18,8 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.springframework.stereotype.Component;
@@ -37,8 +39,11 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 
 @Component
 public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap> {
+	
+	private static Logger logger = LoggerFactory.getLogger(ConceptMapProvider.class);
 
-	FhirContext fhirContext;
+	
+//	FhirContext fhirContext;
 
 	public ConceptMapProvider(FhirContext fhirContext) {
 		super(fhirContext);
@@ -150,6 +155,11 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 			@OperationParam(name = "codeableConcept") CodeableConcept codeableConcept,
 			@OperationParam(name = "target") StringParam target,
 			@OperationParam(name = "targetsystem") StringParam targetSystem) {
+		
+		logger.trace("code  " + code.asStringValue());
+		logger.trace("source  " + source);
+		logger.trace("target  " + target);
+		
 		Parameters parameters = new Parameters();
 
 		BooleanType value = new BooleanType();
@@ -157,6 +167,8 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 		parameters.addParameter().setName("result").setValue(value);
 
 		String conceptMapKey = createKey(source.getValue(), target.getValue());
+		
+		
 
 		if (conceptMaps.containsKey(conceptMapKey)) {
 
@@ -164,7 +176,6 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 
 			ConceptMapGroupComponent conceptMapGroupComponent = conceptMap.getGroupFirstRep();
 			for (SourceElementComponent sourceElementComponent : conceptMapGroupComponent.getElement()) {
-				// System.out.println("testing:"+sourceElementComponent.getCode());
 				if (sourceElementComponent.hasTarget() && sourceElementComponent.hasCode()) {
 					if (sourceElementComponent.getCode().equals(code.getValue())) {
 						parameters = updateParameters(parameters, value, sourceElementComponent, conceptMapGroupComponent);
@@ -178,6 +189,13 @@ public class ConceptMapProvider extends AbstractJaxRsResourceProvider<ConceptMap
 			}
 
 		}
+		
+		if (logger.isTraceEnabled()) {
+			
+			
+			logger.trace("Return  " + FhirContext.forR5().newJsonParser().encodeResourceToString(parameters));
+		}
+		
 		return parameters;
 	}
 

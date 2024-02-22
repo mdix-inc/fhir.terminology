@@ -15,6 +15,8 @@ hapi:
       request-only: true
 logging:
   level:
-    org.springframework.web: INFO
-    ca.uhn.fhir.jaxrs: INFO
-    
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+    org.mdix: ${LOGGING_LEVEL_MDIX:INFO}
+    org.springframework: ${LOGGING_LEVEL_SPRING:info}
+    com.google: ${LOGGING_LEVEL_JSCOMP:OFF}
+   
