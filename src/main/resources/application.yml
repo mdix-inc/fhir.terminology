@@ -16,7 +16,7 @@ hapi:
 logging:
   level:
     root: ${LOGGING_LEVEL_ROOT:INFO}
-    org.mdix: ${LOGGING_LEVEL_MDIX:INFO}
+    org.mdix: ${LOGGING_LEVEL_MDIX:TRACE}
     org.springframework: ${LOGGING_LEVEL_SPRING:info}
     com.google: ${LOGGING_LEVEL_JSCOMP:OFF}
    
