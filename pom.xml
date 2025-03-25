@@ -162,30 +162,7 @@
 						</resource>
 					</resources>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>zip-files</id>
-						<phase>package</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<zip
-									destfile="${project.build.directory}/fhirspringboot.zip">
-									<zipfileset dir="${project.build.directory}/docker" />
-									<zipfileset dir="${project.build.directory}"
-										includes="${project.artifactId}.jar" />
-								</zip>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			</plugin>		
 		</plugins>
 	</build>
 </project>
