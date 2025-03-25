@@ -1,4 +1,4 @@
-package sample.fhir.server.jersey.provider;
+package com.mdix.fhir.terminology.provider;
 
 import java.util.HashMap;
 import java.util.Iterator;

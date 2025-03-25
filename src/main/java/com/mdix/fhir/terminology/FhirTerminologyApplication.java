@@ -1,4 +1,4 @@
-package sample.fhir.server.jersey;
+package com.mdix.fhir.terminology;
 
 /*-
  * #%L
@@ -27,10 +27,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class SampleJerseyRestfulServerApplication {
+public class FhirTerminologyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SampleJerseyRestfulServerApplication.class, args);
+        SpringApplication.run(FhirTerminologyApplication.class, args);
     }
 
 	/*

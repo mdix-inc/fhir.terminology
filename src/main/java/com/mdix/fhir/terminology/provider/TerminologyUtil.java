@@ -9,7 +9,7 @@
  *     seanmuir - initial API and implementation
  *
  *******************************************************************************/
-package sample.fhir.server.jersey.provider;
+package com.mdix.fhir.terminology.provider;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
